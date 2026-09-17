@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="description" content="Leitor inteligente de briefings para marketing e criacao." />
+  <title>Briefing Reader</title>
+  <link rel="stylesheet" href="identity.css" />
+  <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+  <header class="topo">
+    <div class="shell topo-linha">
+      <div class="marca">
+        <span class="marca-nome" id="brandName">PAUTA</span>
+      </div>
+      <div class="titulo-produto" id="productName">Briefing Reader</div>
+      <div class="top-actions">
+        <button class="hbtn ico" id="themeBtn" type="button" title="Alternar tema" aria-label="Alternar tema">◐</button>
+        <button class="hbtn" id="settingsBtn" type="button">CONFIG</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell app-main">
+    <section class="hero-block" id="inputView">
+      <div class="eyebrow rotulo">LEITOR DE BRIEFING</div>
+      <h1>Transforme qualquer material recebido em um briefing claro para criação.</h1>
+      <p class="lead">Envie um PDF, PowerPoint, Word, TXT ou cole o texto recebido do cliente. A ferramenta identifica objetivo, entregáveis, formatos, mensagens, restrições, prazos e pendências.</p>
+
+      <div class="upload-grid">
+        <section class="card drop-card">
+          <div class="rotulo">ARQUIVO</div>
+          <label class="dropzone" id="dropzone" for="fileInput">
+            <input id="fileInput" type="file" accept=".pdf,.pptx,.docx,.txt,.md" hidden />
+            <span class="drop-icon">↑</span>
+            <strong>Arraste o arquivo aqui</strong>
+            <span>ou clique para selecionar</span>
+            <small>PDF · PPTX · DOCX · TXT · MD</small>
+          </label>
+          <div class="file-info" id="fileInfo" hidden>
+            <div>
+              <span class="rotulo-mini">ARQUIVO SELECIONADO</span>
+              <strong id="fileName"></strong>
+              <span id="fileMeta"></span>
+            </div>
+            <button class="hbtn" id="removeFileBtn" type="button">REMOVER</button>
+          </div>
+        </section>
+
+        <section class="card text-card">
+          <div class="rotulo">TEXTO RECEBIDO</div>
+          <textarea id="rawText" placeholder="Cole aqui e-mail, WhatsApp, briefing do cliente, anotações de reunião, pedido de alteração etc."></textarea>
+          <div class="text-tools">
+            <span class="muted" id="charCount">0 caracteres</span>
+            <button class="hbtn" id="clearTextBtn" type="button">LIMPAR</button>
+          </div>
+        </section>
+      </div>
+
+      <div class="action-row">
+        <div class="provider-status" id="providerStatus"></div>
+        <button class="btn pri generate-btn" id="generateBtn" type="button">GERAR BRIEFING</button>
+      </div>
+    </section>
+
+    <section id="processingView" class="processing-view" hidden>
+      <div class="processing-head">
+        <div>
+          <div class="rotulo">ANALISANDO MATERIAL</div>
+          <h2>Construindo um briefing operacional.</h2>
+        </div>
+        <span class="chip" id="processingChip">PROCESSANDO</span>
+      </div>
+      <div class="progress"><span id="progressBar"></span></div>
+      <div class="steps" id="steps"></div>
+      <pre class="debug-source" id="debugSource" hidden></pre>
+    </section>
+
+    <section id="resultView" hidden>
+      <div class="result-head">
+        <div>
+          <button class="back-link" id="newBriefingBtn" type="button">← NOVO BRIEFING</button>
+          <div class="rotulo">BRIEFING GERADO</div>
+          <h1 id="resultTitle">Briefing</h1>
+        </div>
+        <div class="result-actions">
+          <button class="hbtn" id="copyBtn" type="button">COPIAR</button>
+          <button class="hbtn" id="exportMdBtn" type="button">EXPORTAR MD</button>
+          <button class="hbtn" id="exportJsonBtn" type="button">EXPORTAR JSON</button>
+          <button class="btn pri" id="printBtn" type="button">IMPRIMIR / PDF</button>
+        </div>
+      </div>
+
+      <div class="kpis result-kpis">
+        <div class="kpi"><span class="k">COMPLETUDE</span><span class="v" id="kpiCompleteness">—</span><span class="s">campos essenciais preenchidos</span></div>
+        <div class="kpi"><span class="k">ENTREGÁVEIS</span><span class="v" id="kpiDeliverables">—</span><span class="s">itens identificados</span></div>
+        <div class="kpi"><span class="k">PENDÊNCIAS</span><span class="v" id="kpiPending">—</span><span class="s">pontos para confirmar</span></div>
+        <div class="kpi"><span class="k">DATAS</span><span class="v" id="kpiDates">—</span><span class="s">prazos e períodos</span></div>
+        <div class="kpi"><span class="k">FONTES</span><span class="v" id="kpiSources">—</span><span class="s">referências rastreáveis</span></div>
+        <div class="kpi"><span class="k">CONFIANÇA</span><span class="v" id="kpiConfidence">—</span><span class="s">informação explícita vs. inferida</span></div>
+      </div>
+
+      <nav class="tabs" id="tabs">
+        <button class="tab on" data-tab="overview">VISÃO GERAL</button>
+        <button class="tab" data-tab="deliverables">ENTREGÁVEIS</button>
+        <button class="tab" data-tab="content">CONTEÚDO</button>
+        <button class="tab" data-tab="visual">VISUAL</button>
+        <button class="tab" data-tab="pending">PENDÊNCIAS</button>
+        <button class="tab" data-tab="creation">PARA CRIAÇÃO</button>
+      </nav>
+
+      <div id="tabContent" class="tab-content"></div>
+    </section>
+  </main>
+
+  <div class="scrim" id="settingsScrim"></div>
+  <aside class="drawer" id="settingsDrawer" aria-label="Configurações">
+    <div class="drawer-head">
+      <div>
+        <div class="rotulo">CONFIGURAÇÕES</div>
+        <h2>Motor de IA</h2>
+      </div>
+      <button class="hbtn ico" id="closeSettingsBtn" type="button" aria-label="Fechar">×</button>
+    </div>
+    <div class="drawer-body">
+      <div class="campo">
+        <label>Provedor</label>
+        <select id="providerSelect">
+          <option value="openai">OpenAI</option>
+          <option value="gemini">Google Gemini</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label>Chave da API</label>
+        <input id="apiKeyInput" type="password" autocomplete="off" />
+      </div>
+      <div class="campo">
+        <label>Modelo</label>
+        <input id="modelInput" type="text" />
+      </div>
+      <div class="security-note">
+        <strong>Atenção</strong>
+        <p>Como o GitHub Pages não possui backend, a chave usada pela página fica acessível no navegador. Use uma chave exclusiva para esta ferramenta, com limites de orçamento e acesso restrito.</p>
+      </div>
+      <label class="inline-check">
+        <input id="rememberConfig" type="checkbox" />
+        <span>Lembrar configuração neste navegador</span>
+      </label>
+    </div>
+    <div class="drawer-foot">
+      <button class="btn" id="resetConfigBtn" type="button">RESTAURAR ARQUIVO</button>
+      <button class="btn pri" id="saveConfigBtn" type="button">SALVAR</button>
+    </div>
+  </aside>
+
+  <div class="scrim" id="sourceScrim"></div>
+  <aside class="drawer" id="sourceDrawer" aria-label="Fonte da informação">
+    <div class="drawer-head">
+      <div>
+        <div class="rotulo">FONTE DA INFORMAÇÃO</div>
+        <h2 id="sourceTitle">Referência</h2>
+      </div>
+      <button class="hbtn ico" id="closeSourceBtn" type="button" aria-label="Fechar">×</button>
+    </div>
+    <div class="drawer-body" id="sourceBody"></div>
+  </aside>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+/* ============================================================================
+   IDENTIDADE PAUTA — base para outros produtos
+   Extraído do globals.css em produção. CSS puro: funciona em Next, React, Vue,
+   HTML solto, qualquer coisa. Nenhuma fonte baixada, nenhuma dependência.
+
+   Como usar:
+     1. cole este arquivo no projeto e importe antes do resto
+     2. use os NOMES, nunca os hex: var(--surface), var(--line), var(--accent)
+     3. para trocar de tema no botão, escreva data-theme="dark" ou "light"
+        no <html>. Sem atributo nenhum, o tema segue o sistema.
+   ============================================================================ */
+
+
+/* ── 1. TOKENS ───────────────────────────────────────────────────────────── */
+/* São três blocos, não dois. O visitante pode ter escolhido claro, escolhido
+   escuro, ou não ter escolhido nada — e o terceiro é o mais comum. Todo token
+   nasce no :root; os outros dois só redefinem. Uma cor que só exista dentro do
+   @media não vale para quem está no automático. */
+
+:root{
+  /* fundos, do mais fundo ao mais alto */
+  --ground:#F4F4F6; --surface:#FFFFFF; --surface-2:#FAFAFB; --surface-3:#F1F0F3;
+  /* linhas */
+  --line:#E4E1E6; --line-strong:#D2CDD6;
+  /* texto, quatro níveis nesta ordem */
+  --ink:#17141A; --ink-2:#4A434F; --muted:#6E6572; --faint:#9A929F;
+  /* marca */
+  --accent:#EA0356; --accent-soft:#FFE8F0; --accent-ink:#EA0356;
+  /* significado — nunca decorativas */
+  --ok:#059669; --warn:#D97706; --info:#2563EB; --fire:#EA580C; --none:#8C8494;
+  --alerta:#DC2626;
+  /* mistura das etiquetas: fundo a --chip-a, contorno a --chip-b */
+  --chip-a:12%; --chip-b:26%;
+  /* sete séries de gráfico, testadas para daltonismo nos dois temas */
+  --c1:#EA0356; --c2:#0891B2; --c3:#D97706; --c4:#2563EB;
+  --c5:#059669; --c6:#7C3AED; --c7:#8C8494;
+  --grid-line:#EDEBEF;
+
+  --radius:10px;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+
+@media (prefers-color-scheme: dark){
+ :root:not([data-theme="light"]){
+  --ground:#0C0C0E; --surface:#16161A; --surface-2:#1C1C21; --surface-3:#212127;
+  --line:#2A2A31; --line-strong:#3A3A44;
+  --ink:#F2EFF2; --ink-2:#C9C2CD; --muted:#8E8494; --faint:#6A6272;
+  --accent:#FF0066; --accent-soft:#3A001A; --accent-ink:#FF3D85;
+  --ok:#34D399; --warn:#FBBF24; --info:#60A5FA; --fire:#FB923C; --none:#8C8494;
+  --alerta:#F87171;
+  --chip-a:20%; --chip-b:46%;
+  --c1:#F5487F; --c2:#1795AB; --c3:#BF8613; --c4:#5A90F0;
+  --c5:#17A877; --c6:#9166E8; --c7:#8C8494;
+  --grid-line:#26262D;
+ }
+}
+
+:root[data-theme="dark"]{
+  --ground:#0C0C0E; --surface:#16161A; --surface-2:#1C1C21; --surface-3:#212127;
+  --line:#2A2A31; --line-strong:#3A3A44;
+  --ink:#F2EFF2; --ink-2:#C9C2CD; --muted:#8E8494; --faint:#6A6272;
+  --accent:#FF0066; --accent-soft:#3A001A; --accent-ink:#FF3D85;
+  --ok:#34D399; --warn:#FBBF24; --info:#60A5FA; --fire:#FB923C; --none:#8C8494;
+  --alerta:#F87171;
+  --chip-a:20%; --chip-b:46%;
+  --c1:#F5487F; --c2:#1795AB; --c3:#BF8613; --c4:#5A90F0;
+  --c5:#17A877; --c6:#9166E8; --c7:#8C8494;
+  --grid-line:#26262D;
+}
+
+
+/* ── 2. BASE ─────────────────────────────────────────────────────────────── */
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:var(--sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* dado alinhado: quantidade, data, hora, esforço */
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+
+/* ── 3. RÓTULO ───────────────────────────────────────────────────────────── */
+/* A assinatura mais reconhecível da interface. Toda etiqueta, cabeçalho de
+   coluna e unidade: mono, caixa alta, 9,5–11px, com espaçamento entre letras.
+   Regra prática: se é medida ou nome de campo, é mono; se é frase, é sans. */
+
+.rotulo{font-family:var(--mono);font-size:10px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--muted)}
+.rotulo-mini{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted)}
+
+
+/* ── 4. CABEÇALHO ────────────────────────────────────────────────────────── */
+
+.topo{position:sticky;top:0;z-index:40;background:var(--surface);border-bottom:1px solid var(--line)}
+.topo-linha{display:flex;align-items:center;gap:12px;height:58px}
+.marca{display:flex;align-items:center;gap:11px;padding-right:14px;border-right:1px solid var(--line)}
+.marca-nome{font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+.titulo-produto{font-size:17px;font-weight:650;letter-spacing:-.01em}
+
+
+/* ── 5. BOTÕES E CAMPOS ──────────────────────────────────────────────────── */
+/* Duas alturas: 32px na barra, 38px no formulário. Não invente uma terceira. */
+
+.hbtn{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 12px;
+  border:1px solid var(--line-strong);background:var(--surface);border-radius:8px;
+  cursor:pointer;font-size:13px;color:var(--ink-2);white-space:nowrap}
+.hbtn:hover{border-color:var(--accent);color:var(--accent-ink)}
+.hbtn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.hbtn.ico{width:34px;padding:0;justify-content:center;font-size:15px}
+
+.btn{height:38px;border-radius:9px;padding:0 18px;border:1px solid var(--line-strong);
+  background:var(--surface);cursor:pointer;font-size:13.5px}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.btn.pri:hover{filter:brightness(1.08)}
+
+.f{height:32px;border:1px solid var(--line-strong);background:var(--surface);
+  border-radius:8px;padding:0 10px;font-size:13px}
+.f[type="date"]{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums}
+
+/* campo de formulário, dentro de modal ou painel */
+.campo{display:flex;flex-direction:column;gap:5px}
+.campo label{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted)}
+.campo select,.campo input,.campo textarea{height:38px;border:1px solid var(--line-strong);
+  background:var(--surface-2);border-radius:8px;padding:0 10px;font-size:13.5px}
+.campo textarea{height:70px;padding:8px 10px;resize:vertical;font-family:var(--sans)}
+
+/* o que ainda não existe entra tracejado */
+.vazio-tracejado{border:1px dashed var(--line-strong);background:transparent;border-radius:6px}
+.vazio-tracejado:focus{border-style:solid;border-color:var(--accent)}
+
+/* marcador de concluído */
+.chk{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--line-strong);
+  background:transparent;cursor:pointer;display:grid;place-items:center;
+  color:transparent;font-size:13px}
+.chk:hover{border-color:var(--ok)}
+.chk.on{background:var(--ok);border-color:var(--ok);color:#fff}
+
+
+/* ── 6. ETIQUETAS E CONTADORES ───────────────────────────────────────────── */
+/* A bolha é uma fórmula, não seis cores escritas à mão: fundo a 20% da cor,
+   texto na cor cheia, contorno interno a 42%. Troque --cor, nasce outra. */
+
+.chip{display:inline-flex;align-items:center;justify-content:center;height:26px;
+  border-radius:20px;padding:0 11px;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.05em;text-transform:uppercase;font-weight:600}
+
+.bolha{--cor:var(--none);min-width:20px;height:19px;padding:0 5px;border-radius:10px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:10.5px;font-weight:700;font-variant-numeric:tabular-nums;
+  background:color-mix(in srgb, var(--cor) 20%, var(--surface));color:var(--cor);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--cor) 42%, transparent)}
+.bolha.am{--cor:var(--warn)}
+.bolha.az{--cor:var(--info)}
+.bolha.vm{--cor:var(--alerta)}
+.bolha.cz{--cor:var(--none)}
+.bolha.zero{--cor:var(--none);opacity:.45;font-weight:500}
+
+
+/* ── 7. BLOCOS ───────────────────────────────────────────────────────────── */
+/* Separação por traço de 1px e troca de fundo. Sombra só onde algo flutua de
+   verdade — modal. Nada mais na tela tem sombra. */
+
+.card{background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);padding:16px 18px}
+
+/* números de topo: uma linha só de células, não cartões soltos */
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin:16px 0}
+.kpi{background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.kpi .k{font-family:var(--mono);font-size:10px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-family:var(--mono);font-size:23px;font-weight:600;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums}
+.kpi .s{font-size:11.5px;color:var(--faint)}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){.kpis{grid-template-columns:repeat(2,1fr)}}
+
+
+/* ── 8. TABELA ───────────────────────────────────────────────────────────── */
+
+.gridwrap{background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);overflow:auto}
+table.grade{border-collapse:separate;border-spacing:0;table-layout:fixed}
+.grade thead th{position:sticky;top:0;z-index:2;background:var(--surface-2);text-align:center;
+  font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);font-weight:500;padding:12px 14px;
+  border-bottom:1px solid var(--line-strong);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.grade thead th.ord{cursor:pointer;user-select:none}
+.grade thead th.ord:hover{color:var(--ink-2);background:var(--surface-3)}
+.grade thead th.ord[aria-sort]{color:var(--accent-ink)}
+.grade tbody td{border-bottom:1px solid var(--line);padding:0;height:50px;
+  vertical-align:middle;overflow:hidden;text-align:center}
+.grade tbody tr:hover td{background:var(--surface-2)}
+
+/* célula que vira campo ao passar o mouse */
+.cell{width:100%;height:42px;border:0;background:transparent;padding:0 8px;
+  font-size:12.5px;color:var(--ink);border-radius:6px;text-align:center}
+.cell:hover:not(:disabled){background:var(--surface-3);box-shadow:inset 0 0 0 1px var(--line-strong)}
+.cell:disabled{opacity:1;cursor:default}
+
+
+/* ── 9. ESTADO DA LINHA ──────────────────────────────────────────────────── */
+/* O estado aparece três vezes: fundo, faixa lateral e opacidade. Nunca só na
+   palavra escrita na célula.
+
+   rosa     = prioridade (o único acento em fundo de linha)
+   cinza    = parou de andar (parado, cancelado)
+   vermelho = alguém precisa agir
+   apagado  = terminou, não compete por atenção                              */
+
+.grade tbody tr.prioridade td{background:color-mix(in srgb, var(--accent) 13%, var(--surface))}
+.grade tbody tr.prioridade:hover td{background:color-mix(in srgb, var(--accent) 20%, var(--surface))}
+.grade tbody tr.prioridade td:first-child{box-shadow:inset 4px 0 0 var(--accent)}
+
+.grade tbody tr.parada td,
+.grade tbody tr.cancelada td{background:color-mix(in srgb, var(--none) 12%, var(--surface))}
+.grade tbody tr.parada:hover td,
+.grade tbody tr.cancelada:hover td{background:color-mix(in srgb, var(--none) 19%, var(--surface))}
+.grade tbody tr.parada td:first-child,
+.grade tbody tr.cancelada td:first-child{box-shadow:inset 3px 0 0 var(--none)}
+.grade tbody tr.cancelada .titulo{text-decoration:line-through;color:var(--muted)}
+
+/* a opacidade cai no conteúdo, não na linha: assim o fundo e a faixa
+   continuam inteiros e é só o texto que recua */
+.grade tbody tr.parada td > *,
+.grade tbody tr.cancelada td > *{opacity:.5}
+.grade tbody tr.parada:hover td > *,
+.grade tbody tr.cancelada:hover td > *{opacity:.88}
+
+.grade tbody tr.pendencia td{background:color-mix(in srgb, var(--alerta) 9%, var(--surface))}
+.grade tbody tr.pendencia:hover td{background:color-mix(in srgb, var(--alerta) 14%, var(--surface))}
+.grade tbody tr.pendencia td:first-child{box-shadow:inset 3px 0 0 var(--alerta)}
+
+.grade tbody tr.concluida{opacity:.5}
+.grade tbody tr.concluida:hover{opacity:.88}
+
+/* ⚠️ ARMADILHA: linha que é duas coisas ao mesmo tempo apagaria duas vezes —
+   as opacidades se multiplicam (.5 × .5 = .25) e o texto some. Devolva 1 ao
+   conteúdo quando os dois estados coincidirem. */
+.grade tbody tr.concluida.parada td > *,
+.grade tbody tr.concluida.cancelada td > *,
+.grade tbody tr.concluida.parada:hover td > *,
+.grade tbody tr.concluida.cancelada:hover td > *{opacity:1}
+
+
+/* ── 10. SOBREPOSIÇÕES ───────────────────────────────────────────────────── */
+
+.mask{position:fixed;inset:0;background:rgba(8,8,10,.62);z-index:60;
+  display:grid;place-items:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .18s}
+.mask.on{opacity:1;pointer-events:auto}
+.modal{width:min(720px,96vw);max-height:92vh;overflow-y:auto;background:var(--surface);
+  border:1px solid var(--line-strong);border-radius:14px;
+  box-shadow:0 24px 70px -20px rgba(0,0,0,.55);transform:scale(.97);transition:transform .18s}
+.mask.on .modal{transform:none}
+.modal-h{padding:18px 22px 14px;border-bottom:1px solid var(--line)}
+.modal-h .olho{font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent-ink)}
+.modal-h h2{margin:4px 0 0;font-size:20px;font-weight:650;line-height:1.25;text-wrap:balance}
+.modal-b{padding:18px 22px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.modal-f{padding:14px 22px 18px;display:flex;gap:10px;align-items:center;
+  border-top:1px solid var(--line);flex-wrap:wrap}
+@media (max-width:1100px){.modal-b{grid-template-columns:1fr}}
+
+/* gaveta lateral: borda, não sombra */
+.scrim{position:fixed;inset:0;background:rgba(12,12,14,.45);z-index:50;
+  opacity:0;pointer-events:none;transition:opacity .15s}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(500px,96%);background:var(--surface);
+  border-left:1px solid var(--line);z-index:51;transform:translateX(100%);
+  transition:transform .2s ease;display:flex;flex-direction:column}
+.drawer.on{transform:none}
+
+/* aviso: tinta e papel trocados de lugar — funciona nos dois temas sem uma
+   regra a mais */
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(12px);
+  z-index:80;background:var(--ink);color:var(--surface);border-radius:10px;
+  padding:11px 16px;font-size:13px;max-width:min(560px,92vw);
+  opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
+.toast.on{opacity:1;transform:translateX(-50%)}

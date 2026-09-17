@@ -1,0 +1,24 @@
+TESTE RÁPIDO DO BRIEFING READER
+
+Cole este texto no campo da plataforma depois de configurar a API:
+
+Cliente: Marca Exemplo
+Projeto: Campanha de incentivo Q4
+Objetivo: aumentar o engajamento dos vendedores no último trimestre.
+Público: vendedores e gerentes das lojas.
+Precisamos de um e-mail marketing de 600 px de largura e um post 1080x1350.
+O e-mail deve direcionar para a plataforma pelo CTA "Acessar campanha".
+Usar a identidade visual atual da campanha, com predominância azul e branco.
+Não usar fotos de banco com aparência artificial.
+A comunicação entra no ar em 10 de outubro.
+Ainda não temos a altura do e-mail nem o texto legal.
+
+RESULTADO ESPERADO:
+- objetivo identificado;
+- 2 entregáveis;
+- formatos/dimensões reconhecidos;
+- CTA reconhecido;
+- cores/direção visual;
+- data de entrada no ar;
+- pendência sobre altura do e-mail;
+- pendência sobre texto legal.
